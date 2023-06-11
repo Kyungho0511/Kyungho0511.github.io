@@ -7,7 +7,7 @@ import * as dat from 'lil-gui'
  */
 // Parameters
 const parameters = {
-  color: '#fff7e0'
+  color: '#feeed2'
 }
 
 // Scene
@@ -45,8 +45,8 @@ window.addEventListener('resize', () => {
  * Particles grid
  */
 // Geometry 
-const ROW = 30;
-const COLUMN = 30;
+const ROW = 40;
+const COLUMN = 40;
 const DIST = 1;
 const particlesGeometry = new THREE.BufferGeometry();
 const positions = new Float32Array(ROW * COLUMN * 3);

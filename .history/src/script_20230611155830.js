@@ -5,21 +5,11 @@ import * as dat from 'lil-gui'
 /**
  * Base
  */
-// Parameters
-const parameters = {
-  color: '#fff7e0'
-}
-
-// Scene
 const gui = new dat.GUI();
 const canvas = document.querySelector('#webgl');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(parameters.color);
-gui.addColor(parameters, 'color').onChange(value => {
-  scene.background.set(value);
-});
+console.log(scene.background);
 
-// Axes
 const axesHelper = new THREE.AxesHelper(5);
 axesHelper.visible = false;
 scene.add(axesHelper);
@@ -45,8 +35,8 @@ window.addEventListener('resize', () => {
  * Particles grid
  */
 // Geometry 
-const ROW = 30;
-const COLUMN = 30;
+const ROW = 50;
+const COLUMN = 50;
 const DIST = 1;
 const particlesGeometry = new THREE.BufferGeometry();
 const positions = new Float32Array(ROW * COLUMN * 3);

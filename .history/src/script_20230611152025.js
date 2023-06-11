@@ -5,23 +5,10 @@ import * as dat from 'lil-gui'
 /**
  * Base
  */
-// Parameters
-const parameters = {
-  color: '#fff7e0'
-}
-
-// Scene
 const gui = new dat.GUI();
 const canvas = document.querySelector('#webgl');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(parameters.color);
-gui.addColor(parameters, 'color').onChange(value => {
-  scene.background.set(value);
-});
-
-// Axes
 const axesHelper = new THREE.AxesHelper(5);
-axesHelper.visible = false;
 scene.add(axesHelper);
 
 /**
@@ -45,22 +32,20 @@ window.addEventListener('resize', () => {
  * Particles grid
  */
 // Geometry 
-const ROW = 30;
-const COLUMN = 30;
-const DIST = 1;
+const ROW = 1;
+const COLUMN = 2;
 const particlesGeometry = new THREE.BufferGeometry();
 const positions = new Float32Array(ROW * COLUMN * 3);
 const colors = new Float32Array(ROW * COLUMN * 3);
 
 for (let i = 0; i < ROW; i++) {
   for (let j = 0; j < COLUMN; j++) {
-    const pointIndex = (i * COLUMN + j) * 3; 
-    positions[pointIndex + 0] = j * DIST // X value
-    positions[pointIndex + 1] = 0 // Y value
-    positions[pointIndex + 2] = i * DIST // Z value 
-    colors[pointIndex + 0] = Math.random();
-    colors[pointIndex + 1] = Math.random();
-    colors[pointIndex + 2] = Math.random();
+    positions[i * COLUMN + j + 0] = j // X value
+    positions[i * COLUMN + j + 1] = 0 // Y value
+    positions[i * COLUMN + j + 2] = i // Z value 
+    colors[i * COLUMN + j + 0] = 1;
+    colors[i * COLUMN + j + 1] = 1;
+    colors[i * COLUMN + j + 2] = 1;
   }
 }
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -70,22 +55,20 @@ particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.5,
   sizeAttenuation: true,
-  transparent: true,
+  // transparent: true,
   vertexColors: true
 });
 
 // Points
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-particles.translateX(- COLUMN * DIST / 2);
-particles.translateZ(- ROW * DIST / 2);
 scene.add(particles);
-
+console.log(particles);
 
 /**
  * Camera
  */
-const camera = new THREE.PerspectiveCamera(40, sizes.width / sizes.height, 0.1, 100);
-camera.position.set(0, 10, 10);
+const camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height, 0.1, 100);
+camera.position.z = 3;
 scene.add(camera);
 
 // Controls
@@ -97,7 +80,6 @@ controls.enableDamping = true
  */
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas
-
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));

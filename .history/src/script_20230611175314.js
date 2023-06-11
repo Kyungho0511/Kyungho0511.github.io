@@ -7,7 +7,7 @@ import * as dat from 'lil-gui'
  */
 // Parameters
 const parameters = {
-  color: '#fff7e0'
+  color: '#feeed2'
 }
 
 // Scene

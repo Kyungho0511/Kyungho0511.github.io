@@ -5,21 +5,9 @@ import * as dat from 'lil-gui'
 /**
  * Base
  */
-// Parameters
-const parameters = {
-  color: '#fff7e0'
-}
-
-// Scene
 const gui = new dat.GUI();
 const canvas = document.querySelector('#webgl');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(parameters.color);
-gui.addColor(parameters, 'color').onChange(value => {
-  scene.background.set(value);
-});
-
-// Axes
 const axesHelper = new THREE.AxesHelper(5);
 axesHelper.visible = false;
 scene.add(axesHelper);
@@ -58,9 +46,9 @@ for (let i = 0; i < ROW; i++) {
     positions[pointIndex + 0] = j * DIST // X value
     positions[pointIndex + 1] = 0 // Y value
     positions[pointIndex + 2] = i * DIST // Z value 
-    colors[pointIndex + 0] = Math.random();
-    colors[pointIndex + 1] = Math.random();
-    colors[pointIndex + 2] = Math.random();
+    colors[pointIndex + 0] = 1;
+    colors[pointIndex + 1] = 1;
+    colors[pointIndex + 2] = 1;
   }
 }
 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -70,7 +58,7 @@ particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.5,
   sizeAttenuation: true,
-  transparent: true,
+  // transparent: true,
   vertexColors: true
 });
 
@@ -97,7 +85,6 @@ controls.enableDamping = true
  */
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas
-
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
