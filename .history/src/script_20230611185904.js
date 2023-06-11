@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
-
 /**
  * Base
  */
@@ -25,7 +24,6 @@ const axesHelper = new THREE.AxesHelper(5);
 axesHelper.visible = false;
 scene.add(axesHelper);
 
-
 /**
  * Sizes
  */
@@ -42,7 +40,6 @@ window.addEventListener('resize', () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
-
 
 /**
  * Points grid
@@ -66,11 +63,13 @@ ptsGeometry.setAttribute('position', new THREE.BufferAttribute(ptsPositions, 3))
 
 // Texture
 const textureLoader = new THREE.TextureLoader();
-const ptsTextureGreen = textureLoader.load('/point_green01.png');
+const ptsTextureGreen1 = textureLoader.load('/point_green01.png');
+const ptsTextureGreen2 = textureLoader.load('/point_green02.png');
+const ptsTextureGrey = textureLoader.load('/point_grey.png');
 
 // Material
 const ptsMaterial = new THREE.PointsMaterial({
-  map: ptsTextureGreen,
+  map: ptsTextureGreen1,
   size: 0.5,
   sizeAttenuation: true,
   transparent: true,
@@ -83,7 +82,6 @@ pts.translateX(- COLUMN * DIST / 2);
 pts.translateZ(- ROW * DIST / 2);
 scene.add(pts);
 
-
 /**
  * Camera
  */
@@ -95,7 +93,6 @@ scene.add(camera);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 
-
 /**
  * Renderer
  */
@@ -105,7 +102,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
 
 /**
  * Animate

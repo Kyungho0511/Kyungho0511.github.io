@@ -66,11 +66,13 @@ ptsGeometry.setAttribute('position', new THREE.BufferAttribute(ptsPositions, 3))
 
 // Texture
 const textureLoader = new THREE.TextureLoader();
-const ptsTextureGreen = textureLoader.load('/point_green01.png');
+const ptsTextureGreen1 = textureLoader.load('/point_green01.png');
+const ptsTextureGreen2 = textureLoader.load('/point_green02.png');
+const ptsTextureGrey = textureLoader.load('/point_grey.png');
 
 // Material
 const ptsMaterial = new THREE.PointsMaterial({
-  map: ptsTextureGreen,
+  map: ptsTextureGreen1,
   size: 0.5,
   sizeAttenuation: true,
   transparent: true,

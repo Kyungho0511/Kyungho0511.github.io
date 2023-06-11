@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
-
 /**
  * Base
  */
@@ -25,6 +24,13 @@ const axesHelper = new THREE.AxesHelper(5);
 axesHelper.visible = false;
 scene.add(axesHelper);
 
+/**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader();
+const ptsTextureGreen1 = textureLoader.load('/point_green01.png');
+const ptsTextureGreen2 = textureLoader.load('/point_green02.png');
+const ptsTextureGrey = textureLoader.load('/point_grey.png');
 
 /**
  * Sizes
@@ -43,16 +49,16 @@ window.addEventListener('resize', () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-
 /**
  * Points grid
  */
 // Geometry 
-const ROW = 60;
-const COLUMN = 60;
+const ROW = 30;
+const COLUMN = 30;
 const DIST = 1;
 const ptsGeometry = new THREE.BufferGeometry();
 const ptsPositions = new Float32Array(ROW * COLUMN * 3);
+const colors = new Float32Array(ROW * COLUMN * 3);
 
 for (let i = 0; i < ROW; i++) {
   for (let j = 0; j < COLUMN; j++) {
@@ -64,17 +70,13 @@ for (let i = 0; i < ROW; i++) {
 }
 ptsGeometry.setAttribute('position', new THREE.BufferAttribute(ptsPositions, 3));
 
-// Texture
-const textureLoader = new THREE.TextureLoader();
-const ptsTextureGreen = textureLoader.load('/point_green01.png');
-
 // Material
 const ptsMaterial = new THREE.PointsMaterial({
-  map: ptsTextureGreen,
   size: 0.5,
   sizeAttenuation: true,
   transparent: true,
-  depthWrite: false
+  alphaMap: ptsTextureGreen1,
+  vertexColors: true
 });
 
 // Points
@@ -88,13 +90,12 @@ scene.add(pts);
  * Camera
  */
 const camera = new THREE.PerspectiveCamera(40, sizes.width / sizes.height, 0.1, 100);
-camera.position.set(0, 24, 24);
+camera.position.set(0, 10, 10);
 scene.add(camera);
 
 // Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 
 /**
  * Renderer
@@ -105,7 +106,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
 
 /**
  * Animate
@@ -118,4 +118,5 @@ const tick = () => {
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
 }
+
 tick();

@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
-
 /**
  * Base
  */
@@ -15,16 +14,24 @@ const parameters = {
 const gui = new dat.GUI();
 const canvas = document.querySelector('#webgl');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(parameters.color);
-gui.addColor(parameters, 'color').onChange(value => {
-  scene.background.set(value);
-});
+// scene.background = new THREE.Color(parameters.color);
+// gui.addColor(parameters, 'color').onChange(value => {
+  // scene.background.set(value);
+// });
 
 // Axes
 const axesHelper = new THREE.AxesHelper(5);
 axesHelper.visible = false;
 scene.add(axesHelper);
 
+/**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader();
+const ptsTextureGreen1 = textureLoader.load('/point_green01.png');
+const ptsTextureGreen2 = textureLoader.load('/point_green02.png');
+const ptsTextureGrey = textureLoader.load('/point_grey.png');
+// ptsTextureGrey.minFilter = THREE.NearestFilter;
 
 /**
  * Sizes
@@ -43,13 +50,12 @@ window.addEventListener('resize', () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-
 /**
  * Points grid
  */
 // Geometry 
-const ROW = 60;
-const COLUMN = 60;
+const ROW = 50;
+const COLUMN = 50;
 const DIST = 1;
 const ptsGeometry = new THREE.BufferGeometry();
 const ptsPositions = new Float32Array(ROW * COLUMN * 3);
@@ -64,17 +70,14 @@ for (let i = 0; i < ROW; i++) {
 }
 ptsGeometry.setAttribute('position', new THREE.BufferAttribute(ptsPositions, 3));
 
-// Texture
-const textureLoader = new THREE.TextureLoader();
-const ptsTextureGreen = textureLoader.load('/point_green01.png');
-
 // Material
 const ptsMaterial = new THREE.PointsMaterial({
-  map: ptsTextureGreen,
+  map: ptsTextureGreen1,
   size: 0.5,
   sizeAttenuation: true,
   transparent: true,
-  depthWrite: false
+  depthWrite: false,
+  blending: THREE.AdditiveBlending
 });
 
 // Points
@@ -83,18 +86,16 @@ pts.translateX(- COLUMN * DIST / 2);
 pts.translateZ(- ROW * DIST / 2);
 scene.add(pts);
 
-
 /**
  * Camera
  */
 const camera = new THREE.PerspectiveCamera(40, sizes.width / sizes.height, 0.1, 100);
-camera.position.set(0, 24, 24);
+camera.position.set(0, 20, 20);
 scene.add(camera);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-
 
 /**
  * Renderer
@@ -105,7 +106,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
 
 /**
  * Animate
