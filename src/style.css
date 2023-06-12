@@ -6,6 +6,10 @@ body {
   overflow: hidden;
 }
 
+#physics {
+  display: none;
+}
+
 #webgl {
   position: fixed;
   top: 0;

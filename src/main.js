@@ -1,6 +1,8 @@
+'use strict'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
+import { nodes, WIDTH, HEIGHT } from './physics.js'
 
 /**
  * Base
@@ -24,14 +26,6 @@ const axesHelper = new THREE.AxesHelper(5);
 axesHelper.visible = false;
 scene.add(axesHelper);
 
-/**
- * Textures
- */
-const textureLoader = new THREE.TextureLoader();
-const ptsTextureGreen1 = textureLoader.load('/point_green01.png');
-const ptsTextureGreen2 = textureLoader.load('/point_green02.png');
-const ptsTextureGrey = textureLoader.load('/point_grey.png');
-// ptsTextureGrey.minFilter = THREE.NearestFilter;
 
 /**
  * Sizes
@@ -50,50 +44,37 @@ window.addEventListener('resize', () => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
+
 /**
- * Points grid
+ * Objects
  */
-// Geometry 
-const ROW = 50;
-const COLUMN = 50;
-const DIST = 1;
-const ptsGeometry = new THREE.BufferGeometry();
-const ptsPositions = new Float32Array(ROW * COLUMN * 3);
+// Render nodes from 'physics.js' with circle meshes
+const circleGeometry = new THREE.CircleGeometry(1, 32);
+const circleMaterial = new THREE.MeshBasicMaterial({ color: 'red' });
+const circleGroup = new THREE.Group();
+scene.add(circleGroup);
+circleGroup.rotateX(- Math.PI * 0.5);
+circleGroup.position.set(- WIDTH / 2, 0, HEIGHT / 3);
 
-for (let i = 0; i < ROW; i++) {
-  for (let j = 0; j < COLUMN; j++) {
-    const ptIndex = (i * COLUMN + j) * 3; 
-    ptsPositions[ptIndex + 0] = j * DIST // X value
-    ptsPositions[ptIndex + 1] = 0 // Y value
-    ptsPositions[ptIndex + 2] = i * DIST // Z value 
-  }
+for (const node of nodes) {
+  const circle = new THREE.Mesh(circleGeometry, circleMaterial);
+  circle.position.x = node.x;
+  circle.position.y = node.y;
+  circleGroup.add(circle);
 }
-ptsGeometry.setAttribute('position', new THREE.BufferAttribute(ptsPositions, 3));
-
-// Material
-const ptsMaterial = new THREE.PointsMaterial({
-  map: ptsTextureGreen1,
-  size: 1,
-  sizeAttenuation: true,
-  transparent: true
-});
-
-// Points
-const pts = new THREE.Points(ptsGeometry, ptsMaterial);
-pts.translateX(- COLUMN * DIST / 2);
-pts.translateZ(- ROW * DIST / 2);
-scene.add(pts);
 
 /**
  * Camera
  */
-const camera = new THREE.PerspectiveCamera(40, sizes.width / sizes.height, 0.1, 100);
-camera.position.set(0, 20, 20);
+const camera = new THREE.PerspectiveCamera(40, sizes.width / sizes.height, 0.1, 400);
+camera.position.set(0, 100, 100);
 scene.add(camera);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+gui.add(controls, 'enabled');
+
 
 /**
  * Renderer
@@ -105,12 +86,18 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+
 /**
  * Animate
  */
 const clock = new THREE.Clock();
 
 const tick = () => {
+  // Update circles positions
+  for (let i = 0; i < nodes.length; i++) {
+    circleGroup.children[i].position.set(nodes[i].x, nodes[i].y, 0);
+  }
+
   const elapsedTime = clock.getElapsedTime();
   controls.update();
   renderer.render(scene, camera);
