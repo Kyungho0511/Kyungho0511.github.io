@@ -70,7 +70,7 @@ for (const node of nodes) {
 /**
  * Camera
  */
-const FRUSTUM = 40;
+const FRUSTUM = 30;
 const aspect = sizes.width / sizes.height;
 const camera = new THREE.OrthographicCamera(-FRUSTUM * aspect, FRUSTUM * aspect, FRUSTUM, -FRUSTUM, 1, 400);
 camera.position.set(0, 100, 200);

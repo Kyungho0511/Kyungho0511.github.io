@@ -23,7 +23,7 @@ gui.addColor(parameters, 'color').onChange(value => {
 
 // Axes
 const axesHelper = new THREE.AxesHelper(5);
-axesHelper.visible = false;
+// axesHelper.visible = false;
 scene.add(axesHelper);
 
 
@@ -38,10 +38,10 @@ const sizes = {
 window.addEventListener('resize', () => {
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
-  camera.left = - FRUSTUM * sizes.width / sizes.height;
-  camera.right = FRUSTUM * sizes.width / sizes.height;
-  camera.top = FRUSTUM;
-  camera.bottom = - FRUSTUM;
+  // camera.left = - frustum * sizes.width / sizes.height;
+  // camera.right = frustum * sizes.width / sizes.height;
+  // camera.top = - frustum
+  // camera.bottom =
   camera.updateProjectionMatrix();
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -57,7 +57,7 @@ const circleMaterial = new THREE.MeshBasicMaterial({ color: 'red' });
 const circleGroup = new THREE.Group();
 scene.add(circleGroup);
 circleGroup.rotateX(- Math.PI * 0.5);
-circleGroup.position.set(- WIDTH / 2, 0, HEIGHT / 2);
+// circleGroup.position.set(WIDTH / 2, 0, HEIGHT / 3);
 
 for (const node of nodes) {
   const circle = new THREE.Mesh(circleGeometry, circleMaterial);
@@ -70,9 +70,9 @@ for (const node of nodes) {
 /**
  * Camera
  */
-const FRUSTUM = 40;
+const frustum = 50;
 const aspect = sizes.width / sizes.height;
-const camera = new THREE.OrthographicCamera(-FRUSTUM * aspect, FRUSTUM * aspect, FRUSTUM, -FRUSTUM, 1, 400);
+const camera = new THREE.OrthographicCamera(-frustum * aspect, frustum * aspect, frustum, -frustum, 1, 400);
 camera.position.set(0, 100, 200);
 scene.add(camera);
 
