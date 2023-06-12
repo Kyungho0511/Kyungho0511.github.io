@@ -56,17 +56,10 @@ const ptsPositions = new Float32Array(ROW * COLUMN * 3);
 
 for (let i = 0; i < ROW; i++) {
   for (let j = 0; j < COLUMN; j++) {
-    const ptIndex = (i * COLUMN + j) * 3;
-    if (i % 2 === 0 && j % 2 === 0) {
-      ptsPositions[ptIndex + 0] = j * DIST // X
-      ptsPositions[ptIndex + 1] = 0 // Y
-      ptsPositions[ptIndex + 2] = i * DIST // Z
-    } else if (i % 2 === 1 && j % 2 === 1) {
-      ptsPositions[ptIndex + 0] = j * DIST // X
-      ptsPositions[ptIndex + 1] = 0 // Y
-      ptsPositions[ptIndex + 2] = i * DIST // Z
-    }
-    
+    const ptIndex = (i * COLUMN + j) * 3; 
+    ptsPositions[ptIndex + 0] = j * DIST // X value
+    ptsPositions[ptIndex + 1] = 0 // Y value
+    ptsPositions[ptIndex + 2] = i * DIST // Z value 
   }
 }
 ptsGeometry.setAttribute('position', new THREE.BufferAttribute(ptsPositions, 3));
