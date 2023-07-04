@@ -26,7 +26,7 @@ gui.addColor(parameters, 'color').name('backgroundColor').onChange(value => {
 
 // Axes
 const axesHelper = new THREE.AxesHelper(5);
-// axesHelper.visible = false;
+axesHelper.visible = false;
 scene.add(axesHelper);
 
 
@@ -54,72 +54,85 @@ window.addEventListener('resize', () => {
  * Particles
  */
 const particlesParam = {
-  count: 1000,
+  count: 500,
   dist: 100,
-  size: 20,
-  color: '#000000'
+  size: 24,
+  color: '#ccbb00'
 }
 
-// Geometry
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(particlesParam.count * 3);
-const scales = new Float32Array(particlesParam.count);
-const randoms = new Float32Array(particlesParam.count);
+let geometry = null;
+let material = null;
+let points = null;
 
-for (let i = 0; i < particlesParam.count; i++) {
-  const i3 = i * 3;
-
-  // Positions
-  const randomX = (Math.random() * 2 - 1) * particlesParam.dist;
-  const randomY = (Math.random() * 2 - 1) * particlesParam.dist;
-  const randomZ = (Math.random() * 2 - 1) * particlesParam.dist;
-
-  positions[i3 + 0] = randomX;
-  positions[i3 + 1] = randomY;
-  positions[i3 + 2] = randomZ;
-
-  // Scales
-  scales[i] = Math.random() * particlesParam.size;
-
-  // Randoms
-  randoms[i] = Math.random() * 2 - 1;
-}
-
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
-geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
-
-// Material
-const material = new THREE.ShaderMaterial({
-  transparent: true,
-  vertexColors: true,
-  depthWrite: false,
-  vertexShader: backgroundVertex,
-  fragmentShader: backgroundFragment,
-  uniforms: {
-    uColor: { value: new THREE.Color(particlesParam.color) },
-    uTime: { value: 0 },
-    uMovementHeight: { value: 10 },
-    uMovementSpeed: { value: 0.2 },
-    uScaleSpeed: { value: 2 }
+const generateParticles = () => {
+  if (points !== null) {
+    geometry.dispose();
+    material.dispose();
+    scene.remove(points);
   }
-});
 
-const particlesFolder = gui.addFolder('particles');
-gui.addColor(particlesParam, 'color').name('particleColor').onChange(value => {
+  // Geometry
+  geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(particlesParam.count * 3);
+  const scales = new Float32Array(particlesParam.count);
+  const randoms = new Float32Array(particlesParam.count);
+
+  for (let i = 0; i < particlesParam.count; i++) {
+    const i3 = i * 3;
+
+    // Positions
+    const randomX = (Math.random() * 2 - 1) * particlesParam.dist;
+    const randomY = (Math.random() * 2 - 1) * particlesParam.dist;
+    const randomZ = (Math.random() * 2 - 1) * particlesParam.dist;
+
+    positions[i3 + 0] = randomX;
+    positions[i3 + 1] = randomY;
+    positions[i3 + 2] = randomZ;
+
+    // Scales
+    scales[i] = Math.random() * particlesParam.size;
+
+    // Randoms
+    randoms[i] = Math.random() * 2 - 1;
+  }
+
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+  geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
+
+  // Material
+  material = new THREE.ShaderMaterial({
+    transparent: true,
+    vertexColors: true,
+    depthWrite: false,
+    vertexShader: backgroundVertex,
+    fragmentShader: backgroundFragment,
+    uniforms: {
+      uColor: { value: new THREE.Color(particlesParam.color) },
+      uTime: { value: 0 },
+      uMovementHeight: { value: 10 },
+      uMovementSpeed: { value: 0.2 },
+      uScaleSpeed: { value: 2 }
+    }
+  });
+
+  // Points
+  points = new THREE.Points(geometry, material);
+  scene.add(points);
+}
+
+generateParticles();
+
+const debugFolder = gui.addFolder('particles');
+debugFolder.addColor(particlesParam, 'color').name('particleColor').onChange(value => {
   material.uniforms.uColor.value.set(particlesParam.color);
 });
-gui.add(particlesParam, 'count').min(500).max(2000).step(1).name('particlesCount');
-gui.add(particlesParam, 'dist').min(10).max(200).step(0.1).name('particlesDist');
-gui.add(particlesParam, 'size').min(5).max(50).step(0.1).name('particlesSize');
-gui.add(material.uniforms.uMovementHeight, 'value').min(0).max(30).step(0.1).name('uMovementHeight');
-gui.add(material.uniforms.uMovementSpeed, 'value').min(0).max(5).step(0.1).name('uMovementSpeed');
-gui.add(material.uniforms.uScaleSpeed, 'value').min(0).max(5).step(0.1).name('uScaleSpeed');
-
-
-// Points
-const points = new THREE.Points(geometry, material);
-scene.add(points);
+debugFolder.add(particlesParam, 'count').min(100).max(2000).step(1).name('particlesCount').onFinishChange(generateParticles);
+debugFolder.add(particlesParam, 'dist').min(10).max(200).step(0.1).name('particlesDist').onFinishChange(generateParticles);
+debugFolder.add(particlesParam, 'size').min(5).max(50).step(0.1).name('particlesSize').onFinishChange(generateParticles);
+debugFolder.add(material.uniforms.uMovementHeight, 'value').min(0).max(30).step(0.1).name('uMovementHeight');
+debugFolder.add(material.uniforms.uMovementSpeed, 'value').min(0).max(5).step(0.1).name('uMovementSpeed');
+debugFolder.add(material.uniforms.uScaleSpeed, 'value').min(0).max(5).step(0.1).name('uScaleSpeed');
 
 /**
  * Objects
