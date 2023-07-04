@@ -10,9 +10,9 @@ export default class Particles {
     this.clock = this.webgl.clock;
     this.debug = this.webgl.debug;
     this.parameters = {
-      count: 500,
-      dist: 100.,
-      size: 24,
+      count: 800,
+      dist: 100,
+      size: 12,
       color: '#ccbb00'
     }
 
@@ -66,9 +66,14 @@ export default class Particles {
       uniforms: {
         uColor: { value: new THREE.Color(this.parameters.color) },
         uTime: { value: 0 },
+        
         uMovementHeight: { value: 10 },
-        uMovementSpeed: { value: 0.2 },
-        uScaleSpeed: { value: 2 }
+        uMovementSpeed: { value: 0.6 },
+        uScaleSpeed: { value: 2 },
+        
+        uNoiseHeight: { value: 4 },
+        uNoiseFrequency: { value: 20},
+        uNoiseSpeed:{ value: 0.4 }
       }
     });
 
@@ -94,11 +99,17 @@ export default class Particles {
         .min(5).max(50).step(0.1).name('particlesSize')
         .onFinishChange(this.generateParticles);
       this.debugFolder.add(material.uniforms.uMovementHeight, 'value')
-        .min(0).max(30).step(0.1).name('uMovementHeight');
+        .min(0).max(30).step(0.1).name('movementHeight');
       this.debugFolder.add(material.uniforms.uMovementSpeed, 'value')
-        .min(0).max(5).step(0.1).name('uMovementSpeed');
+        .min(0).max(5).step(0.1).name('movementSpeed');
       this.debugFolder.add(material.uniforms.uScaleSpeed, 'value')
-        .min(0).max(5).step(0.1).name('uScaleSpeed');
+        .min(0).max(5).step(0.1).name('scaleSpeed');
+      this.debugFolder.add(material.uniforms.uNoiseHeight, 'value')
+        .min(0).max(10).step(0.1).name('noiseHeight');
+      this.debugFolder.add(material.uniforms.uNoiseFrequency, 'value')
+        .min(0).max(30).step(0.1).name('noiseFrequency');
+      this.debugFolder.add(material.uniforms.uNoiseSpeed, 'value')
+        .min(0).max(10).step(0.1).name('noiseSpeed');
     }
   }
 
