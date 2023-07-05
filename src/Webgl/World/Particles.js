@@ -10,9 +10,9 @@ export default class Particles {
     this.clock = this.webgl.clock;
     this.debug = this.webgl.debug;
     this.parameters = {
-      count: 1000,
+      count: 2000,
       dist: 60,
-      size: 7,
+      size: 10,
       color: '#ccbb00'
     }
 

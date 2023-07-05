@@ -1,25 +1,52 @@
 import * as TRHEE from 'three'
+import Webgl from '../Webgl.js'
+import Physics from './Physics.js'
 
-/**
- * Objects
- */
-// // Render nodes from 'physics.js' with circle meshes
-// const circleGeometry = new THREE.CircleGeometry(1, 32);
-// const circleMaterial = new THREE.MeshBasicMaterial({ color: 'red' });
-// const circleGroup = new THREE.Group();
-// scene.add(circleGroup);
-// circleGroup.rotateX(- Math.PI * 0.5);
-// circleGroup.position.set(- WIDTH / 2, 0, HEIGHT / 2);
+export default class Contents {
+  constructor() {
+    this.webgl = new Webgl();
+    this.scene = this.webgl.scene;
+    this.debug = this.webgl.debug;
+    this.physics = new Physics();
+    this.nodes = this.physics.nodes;
+    this.parameters = {
+      color: 'orange'
+    }
 
-// for (const node of nodes) {
-//   const circle = new THREE.Mesh(circleGeometry, circleMaterial);
-//   circle.position.x = node.x;
-//   circle.position.y = node.y;
-//   circleGroup.add(circle);
-// }
+    this.setGroup();
+    this.setGeometry();
+    this.setMaterial();
+    this.setMesh();
+  }
 
+  setGroup() {
+    this.group = new TRHEE.Group();
+    this.scene.add(this.group);
+    this.group.rotateX(- Math.PI * 0.5);
+    this.group.position.set(
+      -this.physics.canvasWidth / 2, 0, this.physics.canvasHeight / 2);
+  }
 
-// // Update circles positions
-// for (let i = 0; i < nodes.length; i++) {
-//   circleGroup.children[i].position.set(nodes[i].x, nodes[i].y, 0);
-// }
+  setGeometry() {
+    this.geometry = new TRHEE.CircleGeometry(6, 64);
+  }
+
+  setMaterial() {
+    this.material = new TRHEE.MeshBasicMaterial({ color: this.parameters.color });
+  }
+
+  setMesh() {
+    this.nodes.forEach(node => {
+      this.mesh = new TRHEE.Mesh(this.geometry, this.material);
+      this.mesh.position.x = node.x;
+      this.mesh.position.y = node.y;
+      this.group.add(this.mesh);
+    });
+  }
+
+  update() {
+    this.nodes.forEach((node, i) => {
+      this.group.children[i].position.set(node.x, node.y, 0);
+    });
+  }
+}

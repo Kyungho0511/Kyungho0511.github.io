@@ -18,7 +18,7 @@ export default class Floor {
   }
 
   setGeometry() {
-    this.geometry = new THREE.PlaneGeometry(200, 200, 1, 1);
+    this.geometry = new THREE.PlaneGeometry(250, 250, 1, 1);
   }
 
   setMaterial() {
@@ -29,7 +29,7 @@ export default class Floor {
       fragmentShader: floorFragment,
       uniforms: {
         uColor: { value: new THREE.Color(this.parameters.color) },
-        uGridSize: { value: 70 },
+        uGridSize: { value: 65 },
         uLineWeight: { value: 0.035 },
         uOpacity: { value: 0.05 }
       }
