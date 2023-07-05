@@ -7,14 +7,20 @@ export default class Contents {
     this.webgl = new Webgl();
     this.scene = this.webgl.scene;
     this.debug = this.webgl.debug;
-    this.physics = new Physics();
-    this.nodes = this.physics.nodes;
+
     this.parameters = {
-      color: 'orange'
+      color: '#eef13b',
+      opacity: 0.6,
+      count: 16,
+      radiusMax: 12,
+      radiusMin: 8,
+      canvasWidth: 100,
+      canvasHeight: 75
     }
+    this.physics = new Physics(this.parameters);
+    this.nodes = this.physics.nodes;
 
     this.setGroup();
-    this.setGeometry();
     this.setMaterial();
     this.setMesh();
   }
@@ -27,26 +33,40 @@ export default class Contents {
       -this.physics.canvasWidth / 2, 0, this.physics.canvasHeight / 2);
   }
 
-  setGeometry() {
-    this.geometry = new TRHEE.CircleGeometry(6, 64);
-  }
-
   setMaterial() {
-    this.material = new TRHEE.MeshBasicMaterial({ color: this.parameters.color });
+    this.material = new TRHEE.MeshBasicMaterial({ 
+      color: this.parameters.color,
+      transparent: true,
+      opacity: this.parameters.opacity
+    });
   }
 
   setMesh() {
     this.nodes.forEach(node => {
-      this.mesh = new TRHEE.Mesh(this.geometry, this.material);
+      this.mesh = new TRHEE.Mesh(new TRHEE.CircleGeometry(node.r), this.material);
       this.mesh.position.x = node.x;
       this.mesh.position.y = node.y;
+      this.mesh.position.z = 0.1;
       this.group.add(this.mesh);
     });
+
+    // Debug
+    if (this.debug.active) {
+      this.debugFolder = this.debug.ui.addFolder('Contents');
+      this.debugFolder.addColor(this.parameters, 'color')
+        .name('color').onChange(value => {
+          this.material.color.set(value);
+        });
+      this.debugFolder.add(this.parameters, 'opacity')
+        .min(0).max(1).step(0.01).name('opacity').onFinishChange(value => {
+          this.material.opacity = value;
+        });
+    }
   }
 
   update() {
     this.nodes.forEach((node, i) => {
-      this.group.children[i].position.set(node.x, node.y, 0);
+      this.group.children[i].position.set(node.x, node.y, 0.1);
     });
   }
 }

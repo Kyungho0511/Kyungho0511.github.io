@@ -2,12 +2,12 @@ import * as d3 from 'd3-selection'
 import * as d3f from 'd3-force'
 
 export default class Physics {
-  constructor() {
-    this.count = 20;
-    this.radiusMax = 5;
-    this.radiusMin = 2;
-    this.canvasWidth = 100;
-    this.canvasHeight = 75;
+  constructor(parameters) {
+    this.count = parameters.count;
+    this.radiusMax = parameters.radiusMax;
+    this.radiusMin = parameters.radiusMin;
+    this.canvasWidth = parameters.canvasWidth;
+    this.canvasHeight = parameters.canvasHeight;
 
     this.randomPtsGenerator();
     this.forceSimulation();
@@ -35,7 +35,7 @@ export default class Physics {
       .attr('cy', d => d.y);
     
     const simulationNodes = d3f.forceSimulation(this.nodes)
-      .force('charge', d3f.forceManyBody().strength(-0.2));
+      .force('charge', d3f.forceManyBody().strength(-1));
 
     simulationNodes.on('tick', () => {
       circles
