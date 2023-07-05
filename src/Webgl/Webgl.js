@@ -41,8 +41,6 @@ export default class Webgl {
       window.requestAnimationFrame(tick);
     }
     tick();
-
-    
   }
 
   setBackground() {

@@ -10,9 +10,9 @@ export default class Particles {
     this.clock = this.webgl.clock;
     this.debug = this.webgl.debug;
     this.parameters = {
-      count: 800,
-      dist: 100,
-      size: 12,
+      count: 1000,
+      dist: 60,
+      size: 7,
       color: '#ccbb00'
     }
 
@@ -67,11 +67,11 @@ export default class Particles {
         uColor: { value: new THREE.Color(this.parameters.color) },
         uTime: { value: 0 },
         
-        uMovementHeight: { value: 10 },
+        uMovementHeight: { value: 7 },
         uMovementSpeed: { value: 0.6 },
-        uScaleSpeed: { value: 2 },
+        uScaleSpeed: { value: 1.5 },
         
-        uNoiseHeight: { value: 4 },
+        uNoiseHeight: { value: 3 },
         uNoiseFrequency: { value: 20},
         uNoiseSpeed:{ value: 0.4 }
       }
@@ -83,20 +83,19 @@ export default class Particles {
 
     // Debug
     if (this.debug.active) {
-      this.debugFolder = this.debug.ui.addFolder('particles');
+      this.debugFolder = this.debug.ui.addFolder('Particles');
       this.debugFolder.addColor(this.parameters, 'color')
-        .name('particleColor')
-        .onChange(value => {
-          material.uniforms.uColor.value.set(this.parameters.color);
+        .name('color').onChange(value => {
+          material.uniforms.uColor.value.set(value);
         });
       this.debugFolder.add(this.parameters, 'count')
-        .min(100).max(2000).step(1).name('particlesCount')
+        .min(100).max(5000).step(1).name('count')
         .onFinishChange(this.generateParticles);
       this.debugFolder.add(this.parameters, 'dist')
-        .min(10).max(200).step(0.1).name('particlesDist')
+        .min(10).max(200).step(0.1).name('dist')
         .onFinishChange(this.generateParticles);
       this.debugFolder.add(this.parameters, 'size')
-        .min(5).max(50).step(0.1).name('particlesSize')
+        .min(5).max(50).step(0.1).name('size')
         .onFinishChange(this.generateParticles);
       this.debugFolder.add(material.uniforms.uMovementHeight, 'value')
         .min(0).max(30).step(0.1).name('movementHeight');
