@@ -30,7 +30,7 @@ export default class Floor {
       uniforms: {
         uColor: { value: new THREE.Color(this.parameters.color) },
         uGridSize: { value: 65 },
-        uLineWeight: { value: 0.035 },
+        uLineWeight: { value: 0.02 },
         uOpacity: { value: 0.05 }
       }
     });
@@ -39,6 +39,7 @@ export default class Floor {
   setMesh() {
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.rotation.x = -Math.PI * 0.5;
+    this.mesh.rotation.z = Math.PI * 0.25;
     this.scene.add(this.mesh);
 
     // Debug

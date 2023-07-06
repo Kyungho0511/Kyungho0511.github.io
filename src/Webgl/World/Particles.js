@@ -13,7 +13,7 @@ export default class Particles {
       count: 2000,
       dist: 60,
       size: 10,
-      color: '#ccbb00'
+      color: '#e2d540'
     }
 
     this.generateParticles();

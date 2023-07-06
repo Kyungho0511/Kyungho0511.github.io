@@ -9,13 +9,14 @@ export default class Contents {
     this.debug = this.webgl.debug;
 
     this.parameters = {
-      color: '#eef13b',
+      color: '#eaee17',
       opacity: 0.6,
-      count: 16,
+      count: 10,
       radiusMax: 12,
       radiusMin: 8,
       canvasWidth: 100,
-      canvasHeight: 75
+      canvasHeight: 75,
+      force: 1
     }
     this.physics = new Physics(this.parameters);
     this.nodes = this.physics.nodes;
@@ -30,7 +31,7 @@ export default class Contents {
     this.scene.add(this.group);
     this.group.rotateX(- Math.PI * 0.5);
     this.group.position.set(
-      -this.physics.canvasWidth / 2, 0, this.physics.canvasHeight / 2);
+      -this.physics.canvasWidth / 2, 0, - this.physics.canvasHeight / 2);
   }
 
   setMaterial() {
@@ -45,7 +46,7 @@ export default class Contents {
     this.nodes.forEach(node => {
       this.mesh = new TRHEE.Mesh(new TRHEE.CircleGeometry(node.r), this.material);
       this.mesh.position.x = node.x;
-      this.mesh.position.y = node.y;
+      this.mesh.position.y = - node.y;
       this.mesh.position.z = 0.1;
       this.group.add(this.mesh);
     });
@@ -66,7 +67,7 @@ export default class Contents {
 
   update() {
     this.nodes.forEach((node, i) => {
-      this.group.children[i].position.set(node.x, node.y, 0.1);
+      this.group.children[i].position.set(node.x, - node.y, 0.1);
     });
   }
 }

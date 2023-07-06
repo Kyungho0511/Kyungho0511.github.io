@@ -45,7 +45,7 @@ export default class Webgl {
 
   setBackground() {
     this.scene.parameters = {
-      color: '#fff7e0'
+      color: '#fffbf0'
     }
     this.scene.background = new THREE.Color(this.scene.parameters.color);
 

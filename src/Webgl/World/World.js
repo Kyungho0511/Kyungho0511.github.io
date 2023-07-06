@@ -8,7 +8,7 @@ export default class World {
   constructor() {
     this.webgl = new Webgl();
     this.scene = this.webgl.scene;
-    this.floor = new Floor();
+    // this.floor = new Floor();
     this.particles = new Particles();
     this.contents = new Contents();
   }

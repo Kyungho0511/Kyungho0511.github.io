@@ -16,7 +16,7 @@ export default class Camera {
 
   setInstance() {
     const FRUSTUM = 40;
-    const X = 200, Y = 150, Z = 200;
+    const X = 0, Y = 150, Z = 0;
     this.instance = new THREE.OrthographicCamera(
       -FRUSTUM * this.aspect, FRUSTUM * this.aspect, FRUSTUM, -FRUSTUM, 1, 400);
     this.instance.position.set(X, Y, Z);
