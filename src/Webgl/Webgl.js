@@ -3,7 +3,6 @@ import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 import World from './World/World.js'
 import Debug from './Debug.js'
-// import { nodes, WIDTH, HEIGHT } from './Physics.js'
 
 let instance = null;
 
@@ -23,6 +22,7 @@ export default class Webgl {
     this.clock = new THREE.Clock();
     this.scene = new THREE.Scene();
     this.camera = new Camera();
+    this.camera.controls.enabled = false; // toggle controls
     this.renderer = new Renderer();
     this.debug = new Debug();
     this.setBackground();
@@ -30,6 +30,9 @@ export default class Webgl {
     this.world = new World();
 
     window.addEventListener('resize', () => {
+      this.sizes.width = window.innerWidth;
+      this.sizes.height = window.innerHeight;
+      this.pixelRatio = Math.min(window.devicePixelRatio, 2);
       this.camera.resize();
       this.renderer.resize();
     });

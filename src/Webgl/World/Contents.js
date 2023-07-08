@@ -6,17 +6,16 @@ export default class Contents {
   constructor() {
     this.webgl = new Webgl();
     this.scene = this.webgl.scene;
+    this.sizes = this.webgl.sizes;
     this.debug = this.webgl.debug;
 
     this.parameters = {
       color: '#eaee17',
       opacity: 0.6,
       count: 10,
-      radiusMax: 12,
-      radiusMin: 8,
-      canvasWidth: 100,
-      canvasHeight: 75,
-      force: 1
+      radiusMax: 160,
+      radiusMin: 100,
+      force: 140
     }
     this.physics = new Physics(this.parameters);
     this.nodes = this.physics.nodes;
@@ -31,7 +30,7 @@ export default class Contents {
     this.scene.add(this.group);
     this.group.rotateX(- Math.PI * 0.5);
     this.group.position.set(
-      -this.physics.canvasWidth / 2, 0, - this.physics.canvasHeight / 2);
+      -this.sizes.width / 2, 0, - this.sizes.height / 2);
   }
 
   setMaterial() {

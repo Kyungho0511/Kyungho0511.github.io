@@ -8,18 +8,16 @@ export default class Camera {
     this.sizes = this.webgl.sizes;
     this.scene = this.webgl.scene;
     this.canvas = this.webgl.canvas;
-    this.aspect = this.sizes.width / this.sizes.height;
 
     this.setInstance();
     this.setControls();
   }
 
   setInstance() {
-    const FRUSTUM = 40;
-    const X = 0, Y = 150, Z = 0;
     this.instance = new THREE.OrthographicCamera(
-      -FRUSTUM * this.aspect, FRUSTUM * this.aspect, FRUSTUM, -FRUSTUM, 1, 400);
-    this.instance.position.set(X, Y, Z);
+      - this.sizes.width / 2, this.sizes.width / 2, 
+      this.sizes.height / 2, - this.sizes.height / 2, 1, 400);
+    this.instance.position.set(0, 100, 0);
     this.scene.add(this.instance);
   }
 
@@ -29,7 +27,10 @@ export default class Camera {
   }
 
   resize() {
-    this.instance.aspect = this.aspect;
+    this.instance.left = - this.sizes.width / 2;
+    this.instance.right = this.sizes.width / 2;
+    this.instance.top = this.sizes.height / 2;
+    this.instance.bottom = - this.sizes.height / 2;
     this.instance.updateProjectionMatrix();
   }
 

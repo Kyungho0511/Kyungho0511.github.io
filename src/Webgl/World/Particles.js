@@ -7,12 +7,12 @@ export default class Particles {
   constructor() {
     this.webgl = new Webgl();
     this.scene = this.webgl.scene;
+    this.sizes = this.webgl.sizes;
     this.clock = this.webgl.clock;
     this.debug = this.webgl.debug;
     this.parameters = {
-      count: 2000,
-      dist: 60,
-      size: 10,
+      count: 10000,
+      scale: 10,
       color: '#e2d540'
     }
 
@@ -37,16 +37,16 @@ export default class Particles {
       const i3 = i * 3;
 
       // Positions
-      const randomX = (Math.random() * 2 - 1) * this.parameters.dist;
-      const randomY = (Math.random() * 2 - 1) * this.parameters.dist;
-      const randomZ = (Math.random() * 2 - 1) * this.parameters.dist;
+      const randomX = (Math.random() * 2 - 1) * this.sizes.width;
+      const randomY = 0;
+      const randomZ = (Math.random() * 2 - 1) * this.sizes.height;
 
       positions[i3 + 0] = randomX;
       positions[i3 + 1] = randomY;
       positions[i3 + 2] = randomZ;
 
       // Scales
-      scales[i] = Math.random() * this.parameters.size;
+      scales[i] = Math.random() * this.parameters.scale;
 
       // Randoms
       randoms[i] = Math.random() * 2 - 1;
@@ -89,7 +89,7 @@ export default class Particles {
           material.uniforms.uColor.value.set(value);
         });
       this.debugFolder.add(this.parameters, 'count')
-        .min(100).max(5000).step(1).name('count')
+        .min(1000).max(50000).step(1).name('count')
         .onFinishChange(this.generateParticles);
       this.debugFolder.add(this.parameters, 'dist')
         .min(10).max(200).step(0.1).name('dist')
