@@ -13,9 +13,9 @@ export default class Contents {
       color: '#eaee17',
       opacity: 0.6,
       count: 10,
-      radiusMax: 160,
-      radiusMin: 100,
-      force: 140
+      scale: 1.3,
+      force: 0.8,
+      forceAlphaTarget: 0.6
     }
     this.physics = new Physics(this.parameters);
     this.nodes = this.physics.nodes;
@@ -29,8 +29,7 @@ export default class Contents {
     this.group = new TRHEE.Group();
     this.scene.add(this.group);
     this.group.rotateX(- Math.PI * 0.5);
-    this.group.position.set(
-      -this.sizes.width / 2, 0, - this.sizes.height / 2);
+    this.group.position.set(-this.sizes.width / 2, 0, -this.sizes.height / 2);
   }
 
   setMaterial() {
@@ -46,7 +45,7 @@ export default class Contents {
       this.mesh = new TRHEE.Mesh(new TRHEE.CircleGeometry(node.r), this.material);
       this.mesh.position.x = node.x;
       this.mesh.position.y = - node.y;
-      this.mesh.position.z = 0.1;
+      this.mesh.position.z = 0;
       this.group.add(this.mesh);
     });
 
@@ -66,7 +65,7 @@ export default class Contents {
 
   update() {
     this.nodes.forEach((node, i) => {
-      this.group.children[i].position.set(node.x, - node.y, 0.1);
+      this.group.children[i].position.set(node.x, - node.y, 0);
     });
   }
 }

@@ -103,7 +103,7 @@ void main() {
   // Movement with perlin noise
   float movement = sin(uTime * (aRandom + uMovementSpeed) + aRandom * TAU) * uMovementHeight * aRandom;
   float noise = cnoise(vec3(modelPosition.xz * uNoiseFrequency, uTime * uNoiseSpeed)) * uNoiseHeight;
-  modelPosition.y += (movement + noise);
+  modelPosition.x += (movement + noise);
 
   vec4 viewPosition = viewMatrix * modelPosition;
   vec4 projectionPosition = projectionMatrix * viewPosition;

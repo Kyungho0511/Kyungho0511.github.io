@@ -16,6 +16,8 @@ export default class Webgl {
     this.sizes = {
       width: window.innerWidth,
       height: window.innerHeight,
+      preWidth: window.innerWidth,
+      preHeight: window.innerHeight,
       pixelRatio: Math.min(window.devicePixelRatio, 2)
     }
     this.canvas = canvas;

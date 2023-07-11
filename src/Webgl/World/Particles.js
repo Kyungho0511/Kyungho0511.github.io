@@ -11,7 +11,7 @@ export default class Particles {
     this.clock = this.webgl.clock;
     this.debug = this.webgl.debug;
     this.parameters = {
-      count: 10000,
+      count: 15000,
       scale: 10,
       color: '#e2d540'
     }
@@ -37,9 +37,9 @@ export default class Particles {
       const i3 = i * 3;
 
       // Positions
-      const randomX = (Math.random() * 2 - 1) * this.sizes.width;
+      const randomX = (Math.random() * 2 - 1) * this.sizes.width * 1.5;
       const randomY = 0;
-      const randomZ = (Math.random() * 2 - 1) * this.sizes.height;
+      const randomZ = (Math.random() * 2 - 1) * this.sizes.height * 1.5;
 
       positions[i3 + 0] = randomX;
       positions[i3 + 1] = randomY;
@@ -67,7 +67,7 @@ export default class Particles {
         uColor: { value: new THREE.Color(this.parameters.color) },
         uTime: { value: 0 },
         
-        uMovementHeight: { value: 7 },
+        uMovementHeight: { value: 10 },
         uMovementSpeed: { value: 0.6 },
         uScaleSpeed: { value: 1.5 },
         
@@ -91,11 +91,8 @@ export default class Particles {
       this.debugFolder.add(this.parameters, 'count')
         .min(1000).max(50000).step(1).name('count')
         .onFinishChange(this.generateParticles);
-      this.debugFolder.add(this.parameters, 'dist')
-        .min(10).max(200).step(0.1).name('dist')
-        .onFinishChange(this.generateParticles);
-      this.debugFolder.add(this.parameters, 'size')
-        .min(5).max(50).step(0.1).name('size')
+      this.debugFolder.add(this.parameters, 'scale')
+        .min(5).max(50).step(0.1).name('scale')
         .onFinishChange(this.generateParticles);
       this.debugFolder.add(material.uniforms.uMovementHeight, 'value')
         .min(0).max(30).step(0.1).name('movementHeight');
